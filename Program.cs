@@ -18,7 +18,13 @@ namespace AspnetcorePsqlDocker
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            // WebHost.CreateDefaultBuilder(args)
+            //     .UseStartup<Startup>();
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+            .UseStartup<Startup>()
+            .UseKestrel(options =>
+            {
+                options.ListenAnyIP(Int32.Parse(System.Environment.GetEnvironmentVariable("PORT")));
+            });
     }
 }
