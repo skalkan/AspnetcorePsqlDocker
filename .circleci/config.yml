@@ -1,0 +1,18 @@
+version: 2
+jobs:
+ build:
+   machine: true
+   steps:
+     - checkout
+
+     # build image
+     - run: |
+         docker info
+         docker build -t aspnetapp -f Dockerfile .
+     # deploy the image
+     - run: |
+         docker login --username=skalkan@gmail.com --password=0aa90aa2-b8a1-44e5-b391-ba24ff0390dc registry.heroku.com
+         docker tag aspnetapp registry.heroku.com/aspnetcore-psql-docker/web
+         docker push registry.heroku.com/aspnetcore-psql-docker/web
+         curl https://cli-assets.heroku.com/install.sh | sh
+         heroku container:release web -a aspnetcore-psql-docker
